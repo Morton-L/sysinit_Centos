@@ -1,5 +1,14 @@
 #!/bin/bash
+
+curl -Oks https://raw.githubusercontent.com/Morton-L/HeadScript_Linux/main/loader.sh
+source loader.sh font error TCPCC
+
 trap _exit INT QUIT TERM
+# 脚本已终止
+_exit() {
+    red "\n脚本已终止.\n"
+    exit 1
+}
 
 function ExternalEnv(){
 	# 系统信息获取
@@ -7,24 +16,6 @@ function ExternalEnv(){
 	getLinuxOSRelease
 	getLinuxOSVersion
 	OSVersionCheck
-	
-	# 字体颜色
-	red(){
-		echo -e "\033[31m\033[01m$1\033[0m"
-	}
-	green(){
-		echo -e "\033[32m\033[01m$1\033[0m"
-	}
-	yellow(){
-		echo -e "\033[33m\033[01m$1\033[0m"
-	}
-	blue(){
-		echo -e "\033[34m\033[01m$1\033[0m"
-	}
-	bold(){
-		echo -e "\033[1m\033[01m$1\033[0m"
-	}
-
 }
 
 # 检测Linux系统发行版本
@@ -129,33 +120,12 @@ if [[ "${osRelease}" == "debian" || "${osRelease}" == "ubuntu" ]]; then
 fi
 }
 
-# TCP拥塞控制查询
-function TCPCC(){
-	tcpcc=$( sysctl net.ipv4.tcp_congestion_control | awk -F ' ' '{print $3}' )
-}
-
-# 脚本已终止
-_exit() {
-    red "\n脚本已终止.\n"
-    exit 1
-}
-
-
 # 安装依赖软件
 function InstallDependentSoftware(){
 	green " =================================================="
 	green " 安装依赖软件..."
 	green " =================================================="
 	$osSystemPackage install -y wget
-}
-
-# 错误反馈
-function Error(){
-	red " =================================================="
-	bold "${ErrorInfo}" 
-	red " =================================================="
-	sleep 6s
-	exit 1
 }
 
 # 更新内核
