@@ -16,6 +16,7 @@ function ExternalEnv(){
 	getLinuxOSRelease
 	getLinuxOSVersion
 	OSVersionCheck
+	TCPCC
 }
 
 # 检测Linux系统发行版本
