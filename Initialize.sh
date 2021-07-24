@@ -1,7 +1,7 @@
 #!/bin/bash
 
 curl -Oks https://raw.githubusercontent.com/Morton-L/HeadScript_Linux/main/loader.sh
-source loader.sh font error TCPCC
+source loader.sh font error TCPCC getLinuxKernelVersion
 
 trap _exit INT QUIT TERM
 # 脚本已终止
@@ -92,11 +92,7 @@ function getLinuxOSVersion(){
     fi
 }
 
-# 检测内核版本
-function getLinuxKernelVersion(){
-	# 以"-"为分割符号打印第一个值
-	LinuxKernelVersion=$(uname -r | awk -F "-" '{print $1}')
-}
+
 
 # 系统版本检查
 function OSVersionCheck(){
@@ -188,6 +184,7 @@ function UpdateKernel(){
 		ErrorInfo=" 内核安装失败...请查看日志"
 		Error
 	fi
+	getLinuxKernelVersion
 
 }
 
