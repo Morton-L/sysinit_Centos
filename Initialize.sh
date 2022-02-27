@@ -359,6 +359,7 @@ function AliVault(){
 	green " 清理缓存和过时文件"
 	green " =================================================="
 	
+	mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 	rm -rf /etc/yum.repos.d/CentOS-Linux-*.*
 	yum clean all
 	
