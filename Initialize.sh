@@ -353,6 +353,31 @@ EOF
 	fi
 }
 
+# 切换阿里云vault镜像源
+function AliVault(){
+	green " =================================================="
+	green " 清理缓存和过时文件"
+	green " =================================================="
+	
+	rm -rf /etc/yum.repos.d/CentOS-Linux-*.*
+	yum clean all
+	
+	green " =================================================="
+	green " 从阿里云下载数据"
+	green " =================================================="
+	
+	wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-vault-8.5.2111.repo
+	sed -i -e '/mirrors.cloud.aliyuncs.com/d' -e '/mirrors.aliyuncs.com/d' /etc/yum.repos.d/CentOS-Base.repo
+	
+	green " =================================================="
+	green " 重建缓存"
+	green " =================================================="
+	
+	yum makecache
+	
+
+}
+
 
 
 # 主界面
@@ -373,6 +398,7 @@ function main(){
 	yellow "    4 .密钥登录"
 	yellow "    5 .开启TCP Fast Open"
 	yellow "    6 .开启Google BBR"
+	yellow "    7 .切换为阿里云Vault源"
 	yellow "    r .重启       q .退出"
 	green " =================================================="
 	read -p " 请选择功能(默认:1) [1-9.q] :" Main
@@ -395,6 +421,7 @@ function main(){
 	
 	if [[ $Main == 3 ]]; then
 		SysUpdate
+		AliVault
 		main
 	fi
 	
@@ -411,6 +438,11 @@ function main(){
 	
 	if [[ $Main == 6 ]]; then
 		GoogleBBR
+		main
+	fi
+	
+	if [[ $Main == 7 ]]; then
+		AliVault
 		main
 	fi
 	
