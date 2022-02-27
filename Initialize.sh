@@ -379,6 +379,14 @@ function AliVault(){
 
 }
 
+# 禁止ping
+function close_icmp(){
+	iptables -A INPUT -p icmp --icmp-type 8 -s 0/0 -j DROP
+	green " =================================================="
+	green " Done!"
+	green " =================================================="
+}
+
 
 
 # 主界面
@@ -400,6 +408,7 @@ function main(){
 	yellow "    5 .开启TCP Fast Open"
 	yellow "    6 .开启Google BBR"
 	yellow "    7 .切换为阿里云Vault源"
+	yellow "    8 .不再回复ping"
 	yellow "    r .重启       q .退出"
 	green " =================================================="
 	read -p " 请选择功能(默认:1) [1-9.q] :" Main
@@ -444,6 +453,11 @@ function main(){
 	
 	if [[ $Main == 7 ]]; then
 		AliVault
+		main
+	fi
+	
+	if [[ $Main == 8 ]]; then
+		close_icmp
 		main
 	fi
 	
