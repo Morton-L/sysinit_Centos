@@ -387,6 +387,11 @@ function close_icmp(){
 	green " =================================================="
 }
 
+# 删除临时文件
+function DelTMP(){
+	rm -rf loader.sh
+}
+
 
 
 # 主界面
@@ -431,7 +436,6 @@ function main(){
 	
 	if [[ $Main == 3 ]]; then
 		SysUpdate
-		AliVault
 		main
 	fi
 	
@@ -463,12 +467,14 @@ function main(){
 	
 	if [[ $Main == r ]]; then
 		green "Ok...Rebooting!"
+		DelTMP
 		sleep 3s
 		reboot
 	fi
 	
 	if [[ $Main == q ]]; then
 		green "Ok...Bye!"
+		DelTMP
 		exit
 	fi
 	
