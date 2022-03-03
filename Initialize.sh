@@ -392,6 +392,17 @@ function DelTMP(){
 	rm -rf loader.sh
 }
 
+# 关闭SELinux
+function disabled_SELinux(){
+	sed -i 's#SELINUX=enforcing#SELINUX=disabled#g' /etc/selinux/config
+	green " =================================================="
+	green " SELinux状态切换为:"
+	grep "SELINUX=disabled" /etc/selinux/config
+	green " 重启生效"
+	green " =================================================="
+	
+}
+
 
 
 # 主界面
@@ -414,6 +425,7 @@ function main(){
 	yellow "    6 .开启Google BBR"
 	yellow "    7 .切换为阿里云Vault源"
 	yellow "    8 .不再回复ping"
+	yellow "    9 .关闭SELinux"
 	yellow "    r .重启       q .退出"
 	green " =================================================="
 	read -p " 请选择功能(默认:1) [1-9.q] :" Main
@@ -462,6 +474,11 @@ function main(){
 	
 	if [[ $Main == 8 ]]; then
 		close_icmp
+		main
+	fi
+	
+	if [[ $Main == 9 ]]; then
+		disabled_SELinux
 		main
 	fi
 	
