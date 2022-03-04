@@ -394,6 +394,7 @@ function DelTMP(){
 
 # 关闭SELinux
 function disabled_SELinux(){
+	chattr -i /etc/selinux/config
 	sed -i 's#SELINUX=enforcing#SELINUX=disabled#g' /etc/selinux/config
 	green " =================================================="
 	green " SELinux状态切换为:"
