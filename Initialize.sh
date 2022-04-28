@@ -142,7 +142,7 @@ function UpdateKernel(){
 	green " 获取内核版本信息"
 	green " =================================================="
 	
-	elrepo_kernel_version=($(wget -qO- https://elrepo.org/linux/kernel/el8/x86_64/RPMS | awk -F'>'$UpdateKernelVersion'-' '/>'$UpdateKernelVersion'-[4-9]./{print $2}' | cut -d- -f1 | sort -V)[-1])
+	elrepo_kernel_version=($(wget -qO- https://elrepo.org/linux/kernel/el8/x86_64/RPMS | awk -F'>'$UpdateKernelVersion'-' '/>'$UpdateKernelVersion'-[4-9]./{print $2}' | cut -d- -f1 | sort -V | tail -n1)[-1])
 	
     if [ ${elrepo_kernel_version} == "[-1]" ]; then
         ErrorInfo=" 无法获取最新的内核版本号"
