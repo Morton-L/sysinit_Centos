@@ -148,12 +148,13 @@ function UpdateKernel(){
         ErrorInfo=" 无法获取最新的内核版本号"
 		Error
     else
+		elrepo_kernel_version=${elrepo_kernel_version%'[-1]'}
 		green " =================================================="
         green " 最新 ${UpdateKernelVersion} 版内核版本号为 ${elrepo_kernel_version}" 
 		green " =================================================="
     fi
 	
-	if [ "${LinuxKernelVersion}" = "${elrepo_kernel_version}" ]; then 
+	if [ "${LinuxKernelVersion}" = "${elrepo_kernel_version%'[-1]'}" ]; then 
             red "当前系统内核版本已经是 ${elrepo_kernel_version} 无需更新! "
 			sleep 5s
             main
@@ -178,6 +179,10 @@ function UpdateKernel(){
     fi
 		
 	yum -y --enablerepo=elrepo-kernel install ${UpdateKernelVersion}
+	
+	if [ "${osReleaseVersionNo}" -eq 7 ]; then
+		grub2-set-default $(awk -F\' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg | grep ${elrepo_kernel_version} | awk -F " : " '{print $1}')
+	fi
 	
 	# 判断执行结果
 	if [ $? -ne 0 ]; then
